@@ -10,15 +10,17 @@ document.addEventListener("DOMContentLoaded", function() {
   // Select nav links
   const navLink = document.querySelectorAll(".nav-link");
 
-  //  menu function
+  // Toggle menu function
   burger.addEventListener("click", () => {
     ul.classList.toggle("show");
+    document.body.classList.toggle("menu-open"); // Add/remove overflow on body
   });
 
   // Close menu when a link is clicked
   navLink.forEach((link) =>
     link.addEventListener("click", () => {
       ul.classList.remove("show");
+      document.body.classList.remove("menu-open"); // Unlock body scroll
     })
   );
 
@@ -33,11 +35,10 @@ document.addEventListener("DOMContentLoaded", function() {
 
   // Adjust the position of the hamburger menu when scrolling
   window.addEventListener("scroll", () => {
-    const scrollPosition = window.scrollY;
-    if (scrollPosition > 0) {
-      nav.style.top = `-${burger.offsetHeight}px`;
+    if (window.scrollY > 0) {
+      nav.classList.add("nav-scrolled");
     } else {
-      nav.style.top = "0";
+      nav.classList.remove("nav-scrolled");
     }
   });
 });

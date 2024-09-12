@@ -102,8 +102,9 @@ nav ul li {
 }
 
 .nav-scrolled {
-  top: -50px; /* Adjust as needed for scrolling effect */
+  top: -50px; 
 }
+
 
 .hero {
   display: flex;
@@ -113,7 +114,7 @@ nav ul li {
   max-width: 100%; /* Ensure the hero section uses full width */
   margin: auto;
   overflow: hidden; /* Prevent content from overflowing */
-  padding: 2rem; /* Add some padding to avoid cutting off */
+  padding: 2rem; 
   flex-wrap: wrap; /* Allow content to wrap when space is limited */
 }
 

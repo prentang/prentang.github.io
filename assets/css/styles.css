@@ -101,6 +101,10 @@ nav ul li {
   display: none;
 }
 
+html {
+  scroll-padding-top: 100px; /* Adjustment based on navbar height */
+}
+
 .nav-scrolled {
   top: -50px; 
 }
@@ -119,7 +123,7 @@ nav ul li {
 }
 
 .hero img {
-  max-width: 50%; /* Restrict the image size to avoid overflow */
+  max-width: 55%; /* Restrict the image size to avoid overflow */
   height: auto;
 }
 

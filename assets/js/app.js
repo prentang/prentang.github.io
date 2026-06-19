@@ -42,7 +42,7 @@
     if (!boot || !text) return;
 
     const lines = [
-      "> initializing night_city.os ...",
+      "> initializing rick_roll.os ...",
       "> mounting /dev/portfolio ........ OK",
       "> loading profile: PRENTICE_TANG",
       "> decrypting credentials ......... OK",

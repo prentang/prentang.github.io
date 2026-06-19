@@ -1,308 +1,415 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="UTF-8" />
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-<!--CSS Styles -->
-<link rel="stylesheet" href="assets/css/styles.css" />
-
-<!-- Icons -->
-<link
-    rel="apple-touch-icon"
-    sizes="180x180"
-    href="assets/icons/apple-touch-icon.png"
-/>
-<link
-    rel="icon"
-    type="image/png"
-    sizes="32x32"
-    href="assets/icons/favicon-32x32.png"
-/>
-
-<!-- Animate CSS CDN -->
-<link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
-/>
-<title>Prentice Tang | Computer Science Student</title>
-</head>
-
-<body>
-<!-- Navbar -->
-<nav>
-    <h1>Prentice Tang</h1>
-    <ul class="navigation">
-    <li><a href="#about" class="nav-link">About</a></li>
-    <li><a href="#skills" class="nav-link">Skills</a></li>
-    <li><a href="#projects" class="nav-link">Projects</a></li>
-    <li><a href="#contact" class="nav-link">Contact</a></li>
-    </ul>
-    <button class="burger-menu" id="burger-menu">
-    <ion-icon class="bars" name="menu-outline"></ion-icon>
-    <!-- <ion-icon class="times" name="close-outline"></ion-icon> -->
-    </button>
-</nav>
-
-<p> </p>
-
-<!-- Main Section -->
-<section class="hero" id="about">
-    <img
-    src="assets/images/3 SCENE.svg"
-    alt="drawkit"
-    loading="lazy"
-    class="hero-img"
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Prentice Tang is a computer science student focused on developer productivity, cloud automation, DevOps, and security tooling."
     />
-    <div class="bio animate__animated animate__shakeX">
-        <h2 class="bio-title">About Me</h2>
-        <p class="bio-text">
-        Hi there! I'm currently a 3rd year Computer Science student at the University of Massachusetts Boston. 
-        <p>I finished my internship
-        at Dräger in the summer of 2024 and I'll be headed to CyberArk summer of 2025.</p> 
-        <p>I am currently doing research for the Asian Studies / Computer Science Department, 
-        a teaching assistant for Microsoft (TEALS), and I have also returned to my part-time in IT at UMass Boston in the DEM division. 
-      </div>
-</section>
+    <meta name="theme-color" content="#05060a" />
 
-<!-- More about -->
-<section class="more-about">
-    <h2>More About Me</h2>
-    <p>
-    My computer science career started when I was very young, taking apart computers and reading books about how a computer functions. When I reached High School is when I learned
-    about web development; HTML/CSS/Javascript and more. 
-    <p>
-    My work as IT consisted of creating batch files/scripts to help automate tasks and check secuirty protocols.
-    </p>
-    <p>
-    During my DevOps internship at Dräger, I onboarded the company's first observability tool using Grafana. I also refactored the Python codebase that handled Jira's REST API - reducing Jenkins build times from 2 hours to just under 5 minutes (give or take).
-    </p>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap"
+      rel="stylesheet"
+    />
 
-    <p>
-    As aforementioned - I recently started at CyberArk as a DevOps Engineer Intern. I'm currently learning more about AWS, CyberArk products, and more!
-    </p>
-</section>
+    <link rel="stylesheet" href="assets/css/styles.css" />
 
-<!-- Skills section -->
-<section class="skills" id="skills">
-    <h2 class="skill-header">My Top Skills</h2>
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="assets/icons/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="assets/icons/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="assets/icons/favicon-16x16.png"
+    />
+    <title>Prentice Tang // CS Student</title>
+  </head>
 
-    <div class="skills-wrapper">
-    <div class="first-set animate__animated animate__pulse">
-        <img
-        src="assets/icons/icons8-html-5.svg"
-        alt=""
-        loading="lazy"
-        class="icon icon-card"
-        />
-        <img
-        src="assets/icons/icons8-css3.svg"
-        alt=""
-        loading="lazy"
-        class="icon icon-card"
-        />
-        <img
-        src="assets/icons/icons8-javascript.svg"
-        alt=""
-        loading="lazy"
-        class="icon icon-card"
-        />
+  <body>
+    <!-- decorative overlays -->
+    <canvas id="bg-canvas" aria-hidden="true"></canvas>
+    <div class="scanlines" aria-hidden="true"></div>
+    <div class="grain" aria-hidden="true"></div>
+    <div class="vignette" aria-hidden="true"></div>
+    <div class="scroll-progress" aria-hidden="true"></div>
+    <div class="hud-frame" aria-hidden="true">
+      <span class="tl"></span><span class="tr"></span><span class="bl"></span><span class="br"></span>
+    </div>
+    <div class="hud-readout left" id="hud-left" aria-hidden="true"></div>
+    <div class="hud-readout right" id="hud-right" aria-hidden="true"></div>
+    <div class="cursor-ring" aria-hidden="true"></div>
+    <div class="boot" id="boot" aria-hidden="true">
+      <pre class="boot-text" id="boot-text"></pre>
     </div>
 
-    <div class="second-set animate__animated animate__pulse">
-        <img
-        src="assets/icons/icons8-python.svg"
-        alt=""
-        loading="lazy"
-        class="icon icon-card"
-        />
-        <img
-        src="assets/icons/icons8-java.svg"
-        alt=""
-        loading="lazy"
-        class="icon icon-card"
-        />
-        <img
-        src="assets/icons/icons8-git.svg"
-        alt=""
-        loading="lazy"
-        class="icon icon-card"
-        />
-    </div>
+    <nav id="nav">
+      <a href="#top" class="brand" data-text="PRENTICE//TANG">PRENTICE<span class="brand-slash">//</span>TANG</a>
+      <ul class="navigation" id="nav-list">
+        <li><a href="#about" class="nav-link"><span class="nav-index">01</span> About</a></li>
+        <li><a href="#experience" class="nav-link"><span class="nav-index">02</span> Experience</a></li>
+        <li><a href="#skills" class="nav-link"><span class="nav-index">03</span> Skills</a></li>
+        <li><a href="#projects" class="nav-link"><span class="nav-index">04</span> Projects</a></li>
+        <li><a href="#leadership" class="nav-link"><span class="nav-index">05</span> Leadership</a></li>
+        <li><a href="#contact" class="nav-link"><span class="nav-index">06</span> Contact</a></li>
+        <li>
+          <a href="Prentice_Tang_Resume.pdf" class="nav-link nav-resume" target="_blank" rel="noopener">
+            Resume <span aria-hidden="true">&#8599;</span>
+          </a>
+        </li>
+      </ul>
+      <button class="burger-menu" id="burger-menu" aria-label="Toggle navigation" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
 
-    <div class="third-set animate__animated animate__pulse">
-        <img
-        src="assets/icons/icons8-my-sql.svg"
-        alt=""
-        loading="lazy"
-        class="icon icon-card"
-        />
-        <img
-        src="assets/icons/icons8-powershell.svg"
-        alt=""
-        loading="lazy"
-        class="icon icon-card"
-        />
-        <img
-        src="assets/icons/icons8-react-native.svg"
-        alt=""
-        loading="lazy"
-        class="icon icon-card"
-        />
-    </div>
+    <main id="top">
+      <!-- ===================== HERO ===================== -->
+      <section class="hero" id="about">
+        <div class="hero-grid" aria-hidden="true"></div>
+        <div class="hero-inner">
+          <p class="kicker reveal"><span class="blink">&#9608;</span> SYSTEM ONLINE &mdash; WELCOME</p>
+          <h1 class="glitch reveal" data-text="PRENTICE TANG">PRENTICE TANG</h1>
+          <p class="role-line reveal">
+            <span class="role-prefix">&gt;</span>
+            <span class="role" id="role">CS Student</span><span class="caret">_</span>
+          </p>
+          <p class="hero-bio reveal">
+            Computer science student building developer systems, cloud automation, and
+            security tooling. Currently a Software Engineer Intern at
+            <span class="hl">Sonos</span>, building a software simulator for speaker
+            hardware to power integration testing and CI pipelines without physical devices.
+          </p>
+          <div class="button-row reveal">
+            <a class="btn btn-primary" href="Prentice_Tang_Resume.pdf" target="_blank" rel="noopener">
+              <span>View Resume</span>
+            </a>
+            <a class="btn btn-ghost" href="mailto:prenticetang@gmail.com">
+              <span>Email Me</span>
+            </a>
+          </div>
 
-    </div>
-</section>
-
-<!-- Projects section -->
-<section class="projects" id="projects">
-    <h2 class="projects-title">Some of my Recent Projects</h2>
-    <div class="projects-container">
-    <div class="project-container project-card">
-        <img
-        src="assets/images/icons8-cyber-security-50.png"
-        alt="secuirty"
-        loading="lazy"
-        class="project-pic"
-        />
-        <h3 class="project-title">RSA</h3>
-        <p class="project-details">
-            Implement the RSA public-key cryptosystem. This project was for me to understand a little more about cyber security and what it entails. 
-        </p>
-        <a href="https://github.com/prentang/RSA" target="_blank" class="project-link">Check it Out</a>
-    </div>
-    <div class="project-container project-card">
-        <img
-        src="assets/images/icons8-sorting-64.png"
-        alt="sorting"
-        loading="lazy"
-        class="project-pic"
-        />
-        <h3 class="project-title">Vital-Sense</h3>
-        <p class="project-details">
-        I purposefully took Computer Organization and Architecture to learn more about ARM and the finer workings of microcontrollers.
-        And during the time in class - I wanted to create something meaningful; an affordable spO2 and heart beat monitor. 
-        </p>
-        <a href="https://www.linkedin.com/in/prentice-tang/overlay/1748840601863/single-media-viewer/?profileId=ACoAAESs-6ABfmlEjG6R_XHpsFzNS9uLhK9Uvic" target="_blank" class="project-link">It's on my Linkedin!</a>
-    </div>
-    <div class="project-container project-card">
-        <img
-        src="assets/images/icons8-autocomplete-64.png"
-        alt="auto"
-        loading="lazy"
-        class="project-pic"
-        />
-        <h3 class="project-title">AutoComplete</h3>
-        <p class="project-details">
-        Implement autocomplete by sorting the queries in lexicographic order; using binary search to find the set of queries 
-        that start with a given prefix.
-        
-        </p>
-        <a href="https://github.com/prentang/AutoComplete" target="_blank" class="project-link">Check it Out</a>
-    </div>
-    </div>
-</section>
-
-<!-- Contact section -->
-<section class="contact" id="contact">
-    <h2>Get In Touch With Me</h2>
-    <div class="contact-form-container">
-    <div class="contact-form">
-        <form action="blank" method="POST">
-        <div class="form-control">
-            <label for="name">Name</label>
-            <input
-            type="text"
-            id="name"
-            name="sender-name"
-            placeholder="Enter Your Name"
-            class="input-field"
-            required
-            />
+          <div class="hud reveal" role="list">
+            <div class="hud-item" role="listitem">
+              <span class="hud-label">// ROLE</span>
+              <span class="hud-value">SWE Intern @ Sonos</span>
+            </div>
+            <div class="hud-item" role="listitem">
+              <span class="hud-label">// LOCATION</span>
+              <span class="hud-value">Boston, MA</span>
+            </div>
+            <div class="hud-item" role="listitem">
+              <span class="hud-label">// GPA</span>
+              <span class="hud-value">3.69 / 4.00</span>
+            </div>
+            <div class="hud-item" role="listitem">
+              <span class="hud-label">// GRADUATION</span>
+              <span class="hud-value">DEC 2026</span>
+            </div>
+          </div>
         </div>
-        <div class="form-control">
-            <label for="email">Email</label>
-            <input
-            type="email"
-            id="email"
-            name="sender-email"
-            placeholder="Enter Your Email"
-            class="input-field"
-            required
-            />
+        <a href="#experience" class="scroll-cue" aria-label="Scroll down">
+          <span>SCROLL</span>
+          <span class="scroll-cue-line"></span>
+        </a>
+      </section>
+
+      <!-- ===================== ABOUT ===================== -->
+      <section class="block" id="about-detail">
+        <header class="block-head reveal">
+          <span class="block-num">// 01</span>
+          <h2 class="block-title" data-text="ABOUT">ABOUT</h2>
+          <span class="block-rule"></span>
+        </header>
+        <div class="panel terminal reveal">
+          <div class="terminal-bar">
+            <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+            <span class="terminal-path">~/prentice/bio.md</span>
+          </div>
+          <div class="terminal-body">
+            <p>
+              My work spans internal developer tools, observability systems, CI/CD
+              automation, and security compliance workflows. Recent internships include
+              <span class="hl">Sonos</span>, <span class="hl">Palo Alto Networks</span>,
+              <span class="hl">CyberArk</span>, and <span class="hl">Draeger</span>, where I
+              have shipped production-facing tools with Python, AWS, Datadog, Grafana,
+              Jenkins, GitHub APIs, and infrastructure automation.
+            </p>
+            <p>
+              Outside of internships, I have supported AI research across the Computer
+              Science and Asian Studies departments, taught CS through Microsoft TEALS, and
+              helped lead the UMass Boston CS Club as Vice President of Finance.
+            </p>
+            <p class="edu-line">
+              <span class="hl">B.A. Computer Science</span> &mdash; University of
+              Massachusetts Boston &nbsp;&middot;&nbsp; Sep 2023 &ndash; Dec 2026 (expected)
+              &nbsp;&middot;&nbsp; GPA 3.69
+            </p>
+          </div>
         </div>
-        <div class="form-control">
-            <label for="message">Message</label>
-            <textarea
-            id="message"
-            cols="60"
-            rows="10"
-            placeholder="Enter Your Message"
-            name="message"
-            class="input-field"
-            required
-            ></textarea>
+      </section>
+
+      <!-- ===================== EXPERIENCE ===================== -->
+      <section class="block" id="experience">
+        <header class="block-head reveal">
+          <span class="block-num">// 02</span>
+          <h2 class="block-title" data-text="EXPERIENCE">EXPERIENCE</h2>
+          <span class="block-rule"></span>
+        </header>
+        <div class="timeline">
+          <article class="xp reveal">
+            <div class="xp-marker" aria-hidden="true"></div>
+            <div class="xp-body panel">
+              <div class="xp-head">
+                <div class="xp-id">
+                  <span class="xp-logo"><img src="assets/logos/sonos.png" alt="Sonos logo" loading="lazy" width="48" height="48" /></span>
+                  <div>
+                    <h3>Software Engineer Intern</h3>
+                    <p class="xp-org">Sonos &mdash; Software Engineering Productivity</p>
+                  </div>
+                </div>
+                <span class="tag-date">JUN 2026 &mdash; CURRENT</span>
+              </div>
+              <p class="xp-loc">Boston, MA</p>
+              <ul>
+                <li>Building a software simulator of Sonos speaker hardware that emulates device drivers and low-level interfaces for integration testing and CI pipelines without physical devices.</li>
+              </ul>
+            </div>
+          </article>
+
+          <article class="xp reveal">
+            <div class="xp-marker" aria-hidden="true"></div>
+            <div class="xp-body panel">
+              <div class="xp-head">
+                <div class="xp-id">
+                  <span class="xp-logo"><img src="assets/logos/palo-alto-networks.png" alt="Palo Alto Networks logo" loading="lazy" width="48" height="48" /></span>
+                  <div>
+                    <h3>DevOps Engineer Intern</h3>
+                    <p class="xp-org">Palo Alto Networks &mdash; CyberArk R&amp;D</p>
+                  </div>
+                </div>
+                <span class="tag-date">FEB 2026 &mdash; MAY 2026</span>
+              </div>
+              <p class="xp-loc">Needham, MA</p>
+              <ul>
+                <li>Built a scheduled monitoring pipeline for supply-chain scanner findings, publishing compliance metrics and anomaly monitors to Datadog.</li>
+                <li>Developed an MCP-powered internal bot workflow that maps Jira tickets to relevant Confluence docs and GitHub repositories.</li>
+                <li>Created a bulk service-metadata updater in Port so teams can update registered services in one workflow.</li>
+              </ul>
+            </div>
+          </article>
+
+          <article class="xp reveal">
+            <div class="xp-marker" aria-hidden="true"></div>
+            <div class="xp-body panel">
+              <div class="xp-head">
+                <div class="xp-id">
+                  <span class="xp-logo"><img src="assets/logos/cyberark.png" alt="CyberArk logo" loading="lazy" width="48" height="48" /></span>
+                  <div>
+                    <h3>DevOps Engineer Intern</h3>
+                    <p class="xp-org">CyberArk &mdash; R&amp;D Software Development</p>
+                  </div>
+                </div>
+                <span class="tag-date">JUN 2025 &mdash; FEB 2026</span>
+              </div>
+              <p class="xp-loc">Newton, MA</p>
+              <ul>
+                <li>Developed an event-driven AWS Lambda service using Python, API Gateway, and SNS to audit and remediate GitHub repository metadata for compliance.</li>
+                <li>Created an artifact signing dashboard with Artifactory and Datadog APIs for macOS and Windows release binaries.</li>
+                <li>Refactored scanner image-version tagging logic, reducing security scan runtime by <span class="hl">97%</span> across scanner pipelines.</li>
+              </ul>
+            </div>
+          </article>
+
+          <article class="xp reveal">
+            <div class="xp-marker" aria-hidden="true"></div>
+            <div class="xp-body panel">
+              <div class="xp-head">
+                <div class="xp-id">
+                  <span class="xp-logo"><img src="assets/logos/draeger.png" alt="Draeger logo" loading="lazy" width="48" height="48" /></span>
+                  <div>
+                    <h3>DevOps Engineer Intern</h3>
+                    <p class="xp-org">Draeger &mdash; R&amp;D Software Development</p>
+                  </div>
+                </div>
+                <span class="tag-date">MAY 2024 &mdash; AUG 2024</span>
+              </div>
+              <p class="xp-loc">Andover, MA</p>
+              <ul>
+                <li>Integrated VMware vSphere metrics into Grafana using Python SDKs and REST APIs for real-time monitoring across 40+ servers.</li>
+                <li>Refactored Python handling Jira's REST API, reducing Jenkins build times from 2 hours to under 5 minutes.</li>
+                <li>Deployed Grafana as the company's first observability tool for cross-departmental data visualization.</li>
+              </ul>
+            </div>
+          </article>
         </div>
-        <input
-            type="submit"
-            value="Submit"
-            id="submit-btn"
-            class="submit-btn"
-        />
-        </form>
-    </div>
-    </div>
-</section>
+      </section>
 
-<!-- Social accounts - Fixed to the right -->
-<div class="socials">
-    <a href="https://www.instagram.com/prent.tang/?hl=en" target="_blank"
-    ><img
-        src="assets/icons/icons8-instagram.gif"
-        alt="Instagram"
-        loading="lazy"
-        class="socicon"
-    /></a>
-    <a href="https://www.linkedin.com/in/prentice-tang/" target="_blank"
-    ><img
-        src="assets/icons/icons8-linkedin-circled.gif"
-        alt="Linkedin"
-        loading="lazy"
-        class="socicon"
-    /></a>
-    <a href="https://github.com/prentang" target="_blank"
-    ><img src="assets/icons/icons8-github.gif" alt="Github" class="socicon"
-    /></a>
-</div>
+      <!-- ===================== SKILLS ===================== -->
+      <section class="block" id="skills">
+        <header class="block-head reveal">
+          <span class="block-num">// 03</span>
+          <h2 class="block-title" data-text="SKILLS">SKILLS</h2>
+          <span class="block-rule"></span>
+        </header>
+        <div class="skills-grid">
+          <article class="panel skill-card reveal">
+            <h3><span class="skill-bracket">[</span> Languages <span class="skill-bracket">]</span></h3>
+            <div class="chips">
+              <span>C/C++</span><span>Java</span><span>JavaScript</span><span>Python</span><span>SQL</span><span>HTML/CSS</span>
+            </div>
+          </article>
+          <article class="panel skill-card reveal">
+            <h3><span class="skill-bracket">[</span> Cloud &amp; Tools <span class="skill-bracket">]</span></h3>
+            <div class="chips">
+              <span>AWS</span><span>Docker</span><span>Git</span><span>Jenkins</span><span>Terraform</span><span>Datadog</span><span>Grafana</span><span>VMware</span><span>Artifactory</span><span>GitHub Actions</span><span>Snyk</span>
+            </div>
+          </article>
+          <article class="panel skill-card reveal">
+            <h3><span class="skill-bracket">[</span> Frameworks &amp; Libraries <span class="skill-bracket">]</span></h3>
+            <div class="chips">
+              <span>NumPy</span><span>Boto3</span><span>Pandas</span><span>GitPython</span><span>PyTest</span><span>PyTorch</span><span>Poetry</span>
+            </div>
+          </article>
+          <article class="panel skill-card reveal">
+            <h3><span class="skill-bracket">[</span> Databases <span class="skill-bracket">]</span></h3>
+            <div class="chips">
+              <span>DynamoDB</span><span>MongoDB</span>
+            </div>
+          </article>
+        </div>
+      </section>
 
-<!-- Scroll to top -->
-<i class="scroll-up" id="scroll-up"
-    ><img
-    src="assets/icons/icons8-upward-arrow.gif"
-    class="socicon up-arrow"
-    alt=""
-/></i>
+      <!-- ===================== PROJECTS ===================== -->
+      <section class="block" id="projects">
+        <header class="block-head reveal">
+          <span class="block-num">// 04</span>
+          <h2 class="block-title" data-text="PROJECTS">PROJECTS</h2>
+          <span class="block-rule"></span>
+        </header>
+        <div class="projects-grid">
+          <article class="panel project reveal">
+            <div class="project-top">
+              <span class="project-id">PRJ_01</span>
+              <span class="tag-date">MAY 2026</span>
+            </div>
+            <h3 class="project-title" data-text="Network Intrusion Detection">Network Intrusion Detection</h3>
+            <p class="project-tech">Python &middot; PyTorch &middot; Scikit-learn &middot; Pandas &middot; NumPy &middot; Matplotlib</p>
+            <p class="project-details">
+              Built a neural-network intrusion detection pipeline on the NSL-KDD dataset,
+              preprocessing traffic data before training supervised MLP and autoencoder
+              models for binary attack detection.
+            </p>
+          </article>
 
-<!-- Footer section -->
-<footer>
-    <p class="copy">&copy; Copyright 2024</p>
-    <p class="copy">
-    Built with &#x2661; by Prentice Tang
-    </p>
-</footer>
+          <article class="panel project reveal">
+            <div class="project-top">
+              <span class="project-id">PRJ_02</span>
+              <span class="tag-date">OCT 2025</span>
+            </div>
+            <h3 class="project-title" data-text="Flight Pathfinder">Flight Pathfinder</h3>
+            <p class="project-tech">Python &middot; Pandas &middot; NetworkX &middot; Plotly &middot; OpenSky REST API &middot; GitHub Actions</p>
+            <p class="project-details">
+              Designed and implemented a flight-path optimization system using Dijkstra's
+              and A* algorithms to compute the shortest routes between U.S. airports.
+            </p>
+          </article>
 
-<!-- Website scripts -->
-<script src="assets/js/app.js"></script>
+          <article class="panel project reveal">
+            <div class="project-top">
+              <span class="project-id">PRJ_03</span>
+              <span class="tag-date">MAR 2025</span>
+            </div>
+            <h3 class="project-title" data-text="Vital Sense">Vital Sense</h3>
+            <p class="project-tech">C/C++ &middot; Arduino IDE &middot; IR Sensor &middot; RTC Module</p>
+            <p class="project-details">
+              Designed and built a $25 heart-rate monitor with +/- 5&ndash;10% SpO2 and
+              heart-rate accuracy compared with $200+ commercial alternatives.
+            </p>
+          </article>
+        </div>
+      </section>
 
-<!-- Ion icons scripts -->
-<script
-    type="module"
-    src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
-></script>
-<script
-    nomodule
-    src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"
-></script>
-</body>
+      <!-- ===================== LEADERSHIP ===================== -->
+      <section class="block" id="leadership">
+        <header class="block-head reveal">
+          <span class="block-num">// 05</span>
+          <h2 class="block-title" data-text="LEADERSHIP">LEADERSHIP</h2>
+          <span class="block-rule"></span>
+        </header>
+        <div class="leadership-grid">
+          <article class="panel lead-card reveal">
+            <h3>Tri-Alpha Honor Society</h3>
+            <p>National Honor Society for First-Generation Students</p>
+            <span class="tag-date">SPRING 2025 &mdash; PRESENT</span>
+          </article>
+          <article class="panel lead-card reveal">
+            <h3>Undergraduate Research Assistant</h3>
+            <p>Computer Science / Asian Studies &mdash; AI Research</p>
+            <span class="tag-date">FALL 2024 &mdash; SPRING 2025</span>
+          </article>
+          <article class="panel lead-card reveal">
+            <h3>Microsoft TEALS</h3>
+            <p>Computer Science Teaching Assistant</p>
+            <span class="tag-date">FALL 2024 &mdash; SPRING 2025</span>
+          </article>
+          <article class="panel lead-card reveal">
+            <h3>UMass Boston CS Club</h3>
+            <p>Vice President of Finance</p>
+            <span class="tag-date">FALL 2023 &mdash; SPRING 2024</span>
+          </article>
+        </div>
+      </section>
+
+      <!-- ===================== CONTACT ===================== -->
+      <section class="block" id="contact">
+        <header class="block-head reveal">
+          <span class="block-num">// 06</span>
+          <h2 class="block-title" data-text="CONTACT">CONTACT</h2>
+          <span class="block-rule"></span>
+        </header>
+        <div class="panel contact-panel reveal">
+          <p class="contact-lead">
+            <span class="prompt">$</span> Open to software engineering, developer
+            productivity, cloud infrastructure, and security tooling opportunities.
+          </p>
+          <div class="contact-links">
+            <a href="mailto:prenticetang@gmail.com">prenticetang@gmail.com</a>
+            <a href="https://www.linkedin.com/in/prentice-tang/" target="_blank" rel="noopener">LinkedIn</a>
+            <a href="https://github.com/prentang" target="_blank" rel="noopener">GitHub</a>
+            <a href="Prentice_Tang_Resume.pdf" target="_blank" rel="noopener">Resume</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <aside class="socials" aria-label="Social links">
+      <a href="https://www.linkedin.com/in/prentice-tang/" target="_blank" rel="noopener" aria-label="LinkedIn">in</a>
+      <a href="https://github.com/prentang" target="_blank" rel="noopener" aria-label="GitHub">gh</a>
+      <span class="socials-rail" aria-hidden="true"></span>
+    </aside>
+
+    <button class="scroll-up" id="scroll-up" aria-label="Scroll to top">&#9650;</button>
+
+    <footer>
+      <p class="copy">&copy; 2026 PRENTICE TANG</p>
+      <p class="copy muted">// built &amp; deployed by Prentice Tang</p>
+    </footer>
+
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+    <script src="assets/js/app.js"></script>
+  </body>
 </html>

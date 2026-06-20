@@ -664,6 +664,7 @@ main { display: block; }
   margin-bottom: 0.9rem;
 }
 .project-details { color: var(--muted); font-size: 0.98rem; }
+.projects-more { display: flex; justify-content: center; margin-top: 2rem; }
 
 /* =========================================================
    LEADERSHIP

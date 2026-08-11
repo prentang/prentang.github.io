@@ -185,8 +185,8 @@
               </div>
               <p class="xp-loc">Boston, MA</p>
               <ul>
-                <li>Refactored legacy speaker simulators from direct exported function calls to an event-driven API that more accurately mimics real hardware behavior, improving testability and debugging.</li>
-                <li>Supporting migration of simulator integration tests from Jenkins to GitHub Actions to improve CI maintainability and developer workflow.</li>
+                <li>Redesigned legacy speaker simulators from direct exported function calls to an event-driven API that more accurately mimics real hardware behavior, improving testability and debugging.</li>
+                <li>Implemented hardware mocks for orientation and cable detect sensors, extending simulator functionality and enabling additional CI test coverage.</li>
                 <li>Developed a CLAUDE.md workflow guiding AI-assisted simulator driver creation, from tracing real hardware behavior to implementation, ioctl-level Python validation, and YAML-based linting.</li>
               </ul>
             </div>
@@ -207,8 +207,8 @@
               </div>
               <p class="xp-loc">Needham, MA</p>
               <ul>
-                <li>Assisting in building a scheduled monitoring pipeline for supply-chain security scanner findings, publishing compliance metrics and anomalies to Datadog for real-time visibility.</li>
-                <li>Created a bulk service-metadata updater in Port so teams can update registered services in one workflow.</li>
+                <li>Contributed to a scheduled monitoring pipeline for supply-chain security scanner findings, publishing compliance metrics and anomalies to Datadog for real-time visibility into Snyk and security findings.</li>
+                <li>Shipped a bulk service-metadata updater in Port so teams can update registered services in one workflow instead of manual service-by-service changes.</li>
               </ul>
             </div>
           </article>
@@ -230,7 +230,7 @@
               <ul>
                 <li>Developed an event-driven AWS Lambda service using Python, API Gateway, and SNS to audit and remediate GitHub repository metadata for compliance.</li>
                 <li>Created an artifact signing dashboard with Artifactory and Datadog APIs for macOS and Windows release binaries.</li>
-                <li>Refactored scanner image-version tagging logic, reducing security scan runtime by <span class="hl">97%</span> across scanner pipelines.</li>
+                <li>Optimized scanner image-version tagging logic, reducing security scan runtime by <span class="hl">70%</span> across scanner pipelines.</li>
               </ul>
             </div>
           </article>
@@ -276,7 +276,7 @@
           <article class="panel skill-card reveal">
             <h3><span class="skill-bracket">[</span> Cloud &amp; Tools <span class="skill-bracket">]</span></h3>
             <div class="chips">
-              <span>AWS</span><span>Docker</span><span>Git</span><span>Jenkins</span><span>Terraform</span><span>Datadog</span><span>Grafana</span><span>VMware</span><span>Artifactory</span><span>GitHub Actions</span><span>Snyk</span>
+              <span>AWS</span><span>Docker</span><span>Git</span><span>Jenkins</span><span>Terraform</span><span>Datadog</span><span>Grafana</span><span>VMware</span><span>Artifactory</span><span>GitHub Actions</span><span>Snyk</span><span>Kubernetes</span><span>Linux</span>
             </div>
           </article>
           <article class="panel skill-card reveal">
@@ -308,12 +308,11 @@
               <span class="tag-date">MAY 2026 &mdash; PRESENT</span>
             </div>
             <h3 class="project-title" data-text="Homelab">Homelab</h3>
-            <p class="project-tech">Proxmox VE &middot; Home Assistant &middot; Tailscale &middot; Linux &middot; IoT</p>
+            <p class="project-tech">Proxmox VE &middot; k3s &middot; Linux &middot; VictoriaMetrics &middot; Grafana</p>
             <p class="project-details">
-              Provisioned a dedicated Home Assistant VM on Proxmox with isolated networking,
-              persistent storage, automated backups, and secure remote access through Tailscale.
-              Integrated IoT devices into custom dashboards and event-driven automations for
-              device status, media control, and household routines.
+              Built a Proxmox VE homelab running a k3s cluster with a persistent
+              VictoriaMetrics and Grafana observability stack for cluster metrics,
+              dashboards, and alerting.
             </p>
           </article>
 

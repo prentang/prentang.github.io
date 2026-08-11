@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Page not found — Prentice Tang's portfolio." />
+    <meta name="robots" content="noindex" />
+    <meta name="theme-color" content="#05060a" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="assets/css/styles.css" />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/favicon-16x16.png" />
+    <title>404 // Prentice Tang</title>
+
+    <style>
+      .notfound-wrap {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 6rem clamp(1.25rem, 6vw, 5rem);
+      }
+      .notfound-wrap .brand { margin-bottom: 2.5rem; }
+      .notfound-wrap .glitch { font-size: clamp(3.5rem, 22vw, 9rem); }
+      .notfound-sub {
+        font-family: var(--font-mono);
+        color: var(--cyan);
+        letter-spacing: 2px;
+        margin-top: 1rem;
+        text-shadow: var(--glow-cyan);
+      }
+      .notfound-trace {
+        font-family: var(--font-mono);
+        color: var(--muted);
+        font-size: 0.9rem;
+        max-width: 480px;
+        margin: 2rem auto 0;
+        text-align: left;
+        border-top: 1px dashed var(--line);
+        padding-top: 1rem;
+      }
+      .notfound-trace .err { color: var(--magenta); }
+      .notfound-wrap .button-row { justify-content: center; }
+    </style>
+  </head>
+
+  <body>
+    <div class="scanlines" aria-hidden="true"></div>
+    <div class="vignette" aria-hidden="true"></div>
+    <div class="hud-frame" aria-hidden="true">
+      <span class="tl"></span><span class="tr"></span><span class="bl"></span><span class="br"></span>
+    </div>
+
+    <main class="notfound-wrap">
+      <a href="/" class="brand" data-text="PRENTICE//TANG">PRENTICE<span class="brand-slash">//</span>TANG</a>
+
+      <h1 class="glitch" data-text="404">404</h1>
+      <p class="notfound-sub">SIGNAL LOST</p>
+
+      <p class="notfound-trace">
+        &gt; tracer.py --locate <span id="notfound-path">this route</span><br />
+        <span class="err">ERROR: route not found (exit 1)</span><br />
+        &gt; this page doesn't exist in the system.
+      </p>
+
+      <div class="button-row" style="margin-top: 2.5rem;">
+        <a class="btn btn-primary" href="/"><span>Return to Base</span></a>
+        <a class="btn btn-ghost" href="mailto:prenticetang@gmail.com"><span>Email Me</span></a>
+      </div>
+    </main>
+
+    <script>
+      var p = document.getElementById("notfound-path");
+      if (location.pathname && location.pathname !== "/") p.textContent = location.pathname;
+    </script>
+  </body>
+</html>

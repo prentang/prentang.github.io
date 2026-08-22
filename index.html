@@ -89,9 +89,10 @@
           </p>
           <p class="hero-bio reveal">
             Computer science student building developer systems, cloud automation, and
-            security tooling. Currently a Software Engineer Intern at
-            <span class="hl">Sonos</span> on the System Software team, renewing and
-            extending the simulator project developers rely on for testing and debugging.
+            security tooling. Most recently a Software Engineer Intern at
+            <span class="hl">Sonos</span> on the System Software team; incoming DevOps
+            Engineer Intern at <span class="hl">Palo Alto Networks</span> starting
+            September 2026.
           </p>
           <div class="button-row reveal">
             <a class="btn btn-primary" href="Prentice_Tang_Resume.pdf" target="_blank" rel="noopener">
@@ -105,7 +106,7 @@
           <div class="hud reveal" role="list">
             <div class="hud-item" role="listitem">
               <span class="hud-label">// ROLE</span>
-              <span class="hud-value">SWE Intern @ Sonos</span>
+              <span class="hud-value">Incoming Intern @ PANW</span>
             </div>
             <div class="hud-item" role="listitem">
               <span class="hud-label">// LOCATION</span>
@@ -113,7 +114,7 @@
             </div>
             <div class="hud-item" role="listitem">
               <span class="hud-label">// GPA</span>
-              <span class="hud-value">3.7 / 4.00</span>
+              <span class="hud-value">3.71 / 4.00</span>
             </div>
             <div class="hud-item" role="listitem">
               <span class="hud-label">// GRADUATION</span>
@@ -149,14 +150,14 @@
               Jenkins, GitHub APIs, and infrastructure automation.
             </p>
             <p>
-              Outside of internships, I have built web tools for the Asian Studies
-              department, taught CS through Microsoft TEALS, and helped lead the UMass
-              Boston CS Club as Vice President of Finance.
+              Outside of internships, I have supported AI research across the Computer
+              Science and Asian Studies departments, taught CS through Microsoft TEALS, and
+              helped lead the UMass Boston CS Club as Vice President of Finance.
             </p>
             <p class="edu-line">
               <span class="hl">B.A. Computer Science</span> &mdash; University of
               Massachusetts Boston &nbsp;&middot;&nbsp; Sep 2023 &ndash; Dec 2026 (expected)
-              &nbsp;&middot;&nbsp; GPA 3.7
+              &nbsp;&middot;&nbsp; GPA 3.71
             </p>
           </div>
         </div>
@@ -175,18 +176,35 @@
             <div class="xp-body panel">
               <div class="xp-head">
                 <div class="xp-id">
+                  <span class="xp-logo"><img src="assets/logos/palo-alto-networks.png" alt="Palo Alto Networks logo" loading="lazy" width="48" height="48" /></span>
+                  <div>
+                    <h3>Incoming DevOps Engineer Intern</h3>
+                    <p class="xp-org">Palo Alto Networks &mdash; Idira R&amp;D</p>
+                  </div>
+                </div>
+                <span class="tag-date">STARTING SEP 2026</span>
+              </div>
+              <p class="xp-loc">Needham, MA</p>
+            </div>
+          </article>
+
+          <article class="xp reveal">
+            <div class="xp-marker" aria-hidden="true"></div>
+            <div class="xp-body panel">
+              <div class="xp-head">
+                <div class="xp-id">
                   <span class="xp-logo"><img src="assets/logos/sonos.png" alt="Sonos logo" loading="lazy" width="48" height="48" /></span>
                   <div>
                     <h3>Software Engineer Intern</h3>
                     <p class="xp-org">Sonos &mdash; Software Engineering Productivity</p>
                   </div>
                 </div>
-                <span class="tag-date">JUN 2026 &mdash; CURRENT</span>
+                <span class="tag-date">JUN 2026 &mdash; AUG 2026</span>
               </div>
               <p class="xp-loc">Boston, MA</p>
               <ul>
-                <li>Redesigned legacy speaker simulators from direct exported function calls to an event-driven API that more accurately mimics real hardware behavior, improving testability and debugging.</li>
-                <li>Implemented hardware mocks for orientation and cable detect sensors, extending simulator functionality and enabling additional CI test coverage.</li>
+                <li>Refactored legacy speaker simulators from direct exported function calls to an event-driven API that more accurately mimics real hardware behavior, improving testability and debugging.</li>
+                <li>Supporting migration of simulator integration tests from Jenkins to GitHub Actions to improve CI maintainability and developer workflow.</li>
                 <li>Developed a CLAUDE.md workflow guiding AI-assisted simulator driver creation, from tracing real hardware behavior to implementation, ioctl-level Python validation, and YAML-based linting.</li>
               </ul>
             </div>
@@ -207,8 +225,8 @@
               </div>
               <p class="xp-loc">Needham, MA</p>
               <ul>
-                <li>Contributed to a scheduled monitoring pipeline for supply-chain security scanner findings, publishing compliance metrics and anomalies to Datadog for real-time visibility into Snyk and security findings.</li>
-                <li>Shipped a bulk service-metadata updater in Port so teams can update registered services in one workflow instead of manual service-by-service changes.</li>
+                <li>Assisted in building a scheduled monitoring pipeline for supply-chain security scanner findings, publishing compliance metrics and anomalies to Datadog for real-time visibility into Snyk and security findings.</li>
+                <li>Made a bulk service-metadata updater in Port so teams can update registered services in one workflow instead of manual service-by-service changes.</li>
               </ul>
             </div>
           </article>
@@ -230,7 +248,7 @@
               <ul>
                 <li>Developed an event-driven AWS Lambda service using Python, API Gateway, and SNS to audit and remediate GitHub repository metadata for compliance.</li>
                 <li>Created an artifact signing dashboard with Artifactory and Datadog APIs for macOS and Windows release binaries.</li>
-                <li>Optimized scanner image-version tagging logic, reducing security scan runtime by <span class="hl">70%</span> across scanner pipelines.</li>
+                <li>Refactored scanner image-version tagging logic, reducing security scan runtime across scanner pipelines.</li>
               </ul>
             </div>
           </article>
@@ -308,11 +326,12 @@
               <span class="tag-date">MAY 2026 &mdash; PRESENT</span>
             </div>
             <h3 class="project-title" data-text="Homelab">Homelab</h3>
-            <p class="project-tech">Proxmox VE &middot; k3s &middot; Linux &middot; VictoriaMetrics &middot; Grafana</p>
+            <p class="project-tech">Proxmox VE &middot; Home Assistant &middot; Tailscale &middot; Linux &middot; IoT</p>
             <p class="project-details">
-              Built a Proxmox VE homelab running a k3s cluster with a persistent
-              VictoriaMetrics and Grafana observability stack for cluster metrics,
-              dashboards, and alerting.
+              Provisioned a dedicated Home Assistant VM on Proxmox with isolated networking,
+              persistent storage, automated backups, and secure remote access through Tailscale.
+              Integrated IoT devices into custom dashboards and event-driven automations for
+              device status, media control, and household routines.
             </p>
           </article>
 
@@ -364,7 +383,7 @@
           </article>
           <article class="panel lead-card reveal">
             <h3>Undergraduate Research Assistant</h3>
-            <p>Asian Studies Department &mdash; Web Development</p>
+            <p>Computer Science / Asian Studies &mdash; AI Research</p>
             <span class="tag-date">FALL 2024 &mdash; SPRING 2025</span>
           </article>
           <article class="panel lead-card reveal">

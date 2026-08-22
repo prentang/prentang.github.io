@@ -23,11 +23,13 @@
     initActiveNav();
     initHud();
     initKonami();
+    initBreachProtocol();
     if (!reduceMotion) initSmoothScroll();
     if (!reduceMotion) initScrollFX();
     if (!reduceMotion) initCanvas();
     if (!reduceMotion) initHeroDecode();
     if (!reduceMotion) initParallax();
+    if (!reduceMotion) initScanCards();
     if (!reduceMotion && finePointer) {
       initCursor();
       initTilt();
@@ -593,5 +595,280 @@
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", apply);
     apply();
+  }
+
+  /* ---------- netrunner scan-to-reveal on project cards ---------- */
+  function initScanCards() {
+    const cards = document.querySelectorAll(".project");
+    cards.forEach((card, i) => {
+      const details = card.querySelector(".project-details");
+      const topRow = card.querySelector(".project-top");
+      if (!details || !topRow) return;
+
+      const redacted = document.createElement("p");
+      redacted.className = "scan-redacted";
+      const source = details.textContent.trim();
+      redacted.textContent =
+        source.replace(/[a-zA-Z0-9]/g, "█").slice(0, 90) + "...";
+      details.insertAdjacentElement("beforebegin", redacted);
+
+      const prompt = document.createElement("p");
+      prompt.className = "scan-prompt";
+      prompt.textContent = "> hover to scan";
+      details.insertAdjacentElement("afterend", prompt);
+
+      const sweep = document.createElement("div");
+      sweep.className = "scanline-sweep";
+      card.appendChild(sweep);
+
+      const tags = document.createElement("span");
+      tags.className = "scan-top-tags";
+      tags.innerHTML = '<span class="scan-flag">ENCRYPTED</span>';
+      topRow.appendChild(tags);
+      const flag = tags.querySelector(".scan-flag");
+
+      card.classList.add("scan-armed");
+
+      let scanned = false;
+      let scanning = false;
+      function runScan() {
+        if (scanned || scanning) return;
+        scanning = true;
+        card.classList.add("scanning");
+        setTimeout(() => {
+          card.classList.remove("scanning");
+          card.classList.add("scanned");
+          flag.textContent = "DECRYPTED";
+          flag.classList.add("done");
+          scanned = true;
+        }, 900);
+      }
+      card.addEventListener("mouseenter", runScan);
+      card.addEventListener("focus", runScan);
+    });
+  }
+
+  /* ---------- breach protocol minigame ---------- */
+  function initBreachProtocol() {
+    const trigger = document.getElementById("breach-trigger");
+    const modal = document.getElementById("breach-modal");
+    if (!trigger || !modal) return;
+
+    const HEX = ["1C", "55", "BD", "E9", "7A", "FF"];
+    const SIZE = 5;
+    const BUFFER_SIZE = 6;
+    const DAEMONS = [
+      { name: "DATAMINE_V1", seq: ["1C", "BD"], desc: "Basic data shard extraction." },
+      { name: "DATAMINE_V2", seq: ["55", "E9", "7A"], desc: "Deep shard extraction. Reveals contact channel." },
+    ];
+
+    const gridEl = document.getElementById("breach-grid");
+    const bufferSlotsEl = document.getElementById("buffer-slots");
+    const stateLabel = document.getElementById("breach-state-label");
+    const axisHint = document.getElementById("breach-axis-hint");
+    const statusEl = document.getElementById("breach-status");
+    const timerText = document.getElementById("breach-timer-text");
+    const timerFill = document.getElementById("breach-timer-fill");
+    const daemonsList = document.getElementById("daemons-list");
+    const resetBtn = document.getElementById("breach-reset");
+
+    let grid = [];
+    let buffer = [];
+    let usedCells = {};
+    let constraint = "free";
+    let axisIndex = null;
+    let lastCell = null;
+    let timer = 45;
+    let timerHandle = null;
+    let gameOver = false;
+    let daemonsDone = {};
+
+    function randHex() {
+      return HEX[Math.floor(Math.random() * HEX.length)];
+    }
+    function buildGrid() {
+      grid = [];
+      for (let r = 0; r < SIZE; r++) {
+        const row = [];
+        for (let c = 0; c < SIZE; c++) row.push(randHex());
+        grid.push(row);
+      }
+    }
+    function allDaemonsDone() {
+      return DAEMONS.every((_, i) => daemonsDone[i]);
+    }
+    function renderDaemons() {
+      daemonsList.innerHTML = "";
+      DAEMONS.forEach((d, i) => {
+        const el = document.createElement("div");
+        el.className = "daemon" + (daemonsDone[i] ? " done" : "");
+        el.innerHTML =
+          '<div class="daemon-name"><span>' + d.name + '</span><span class="daemon-check">✓</span></div>' +
+          '<div class="daemon-seq">' + d.seq.map((h) => "<span>" + h + "</span>").join("") + "</div>" +
+          '<div class="daemon-desc">' + d.desc + "</div>";
+        daemonsList.appendChild(el);
+      });
+    }
+    function renderBuffer() {
+      bufferSlotsEl.innerHTML = "";
+      for (let i = 0; i < BUFFER_SIZE; i++) {
+        const slot = document.createElement("div");
+        slot.className = "buffer-slot" + (i < buffer.length ? " filled" : "");
+        slot.textContent = i < buffer.length ? buffer[i] : "";
+        bufferSlotsEl.appendChild(slot);
+      }
+    }
+    function cellValid(r, c) {
+      if (gameOver) return false;
+      if (usedCells[r + "," + c]) return false;
+      if (buffer.length >= BUFFER_SIZE) return false;
+      if (constraint === "free") return true;
+      if (constraint === "row") return r === axisIndex;
+      if (constraint === "col") return c === axisIndex;
+      return false;
+    }
+    function renderGrid() {
+      gridEl.innerHTML = "";
+      for (let r = 0; r < SIZE; r++) {
+        for (let c = 0; c < SIZE; c++) {
+          const cell = document.createElement("div");
+          const used = usedCells[r + "," + c];
+          const valid = cellValid(r, c);
+          cell.className = "breach-cell" + (used ? " used" : valid ? " valid" : " disabled");
+          if (lastCell && lastCell.r === r && lastCell.c === c) cell.className += " lastpick";
+          cell.textContent = grid[r][c];
+          if (used) {
+            const order = document.createElement("span");
+            order.className = "used-order";
+            order.textContent = used;
+            cell.appendChild(order);
+          }
+          if (valid) {
+            cell.addEventListener("click", (function (rr, cc) {
+              return function () { pick(rr, cc); };
+            })(r, c));
+          }
+          gridEl.appendChild(cell);
+        }
+      }
+    }
+    function updateStateLabel() {
+      if (gameOver) {
+        stateLabel.textContent = allDaemonsDone() ? "BREACH SUCCESSFUL" : "BREACH COMPLETE";
+        return;
+      }
+      if (buffer.length >= BUFFER_SIZE) {
+        stateLabel.textContent = "BUFFER FULL";
+        return;
+      }
+      stateLabel.textContent =
+        constraint === "free" ? "SELECT ANY CELL" :
+        constraint === "row" ? "SELECT FROM ROW " + (axisIndex + 1) :
+        "SELECT FROM COLUMN " + (axisIndex + 1);
+      axisHint.innerHTML =
+        constraint === "free"
+          ? 'First pick is <span class="hl">free</span> — any cell on the grid.'
+          : constraint === "row"
+          ? 'Next pick must come from <span class="hl">row ' + (axisIndex + 1) + "</span>."
+          : 'Next pick must come from <span class="hl">column ' + (axisIndex + 1) + "</span>.";
+    }
+    function checkDaemons() {
+      DAEMONS.forEach((d, i) => {
+        if (daemonsDone[i]) return;
+        const seq = d.seq;
+        for (let start = 0; start <= buffer.length - seq.length; start++) {
+          let match = true;
+          for (let k = 0; k < seq.length; k++) {
+            if (buffer[start + k] !== seq[k]) { match = false; break; }
+          }
+          if (match) { daemonsDone[i] = true; break; }
+        }
+      });
+    }
+    function endGame() {
+      gameOver = true;
+      clearInterval(timerHandle);
+      updateStateLabel();
+      renderGrid();
+      const doneCount = DAEMONS.filter((_, i) => daemonsDone[i]).length;
+      const cls = doneCount === DAEMONS.length ? "success" : doneCount > 0 ? "partial" : "fail";
+      let text;
+      if (doneCount === DAEMONS.length) {
+        text = "&gt; ALL DAEMONS UPLOADED. CONNECTION SECURE.<br />Decrypted channel: <a href=\"mailto:prenticetang@gmail.com\">prenticetang@gmail.com</a>";
+      } else if (doneCount > 0) {
+        text = "&gt; " + doneCount + " OF " + DAEMONS.length + " DAEMONS UPLOADED. BUFFER EXHAUSTED.";
+      } else {
+        text = "&gt; BREACH FAILED. TRACE DETECTED.";
+      }
+      statusEl.innerHTML = '<div class="msg ' + cls + '">' + text + "</div>";
+      renderDaemons();
+    }
+    function pick(r, c) {
+      if (!cellValid(r, c)) return;
+      buffer.push(grid[r][c]);
+      usedCells[r + "," + c] = buffer.length;
+      lastCell = { r: r, c: c };
+      if (constraint === "free" || constraint === "row") { constraint = "col"; axisIndex = c; }
+      else { constraint = "row"; axisIndex = r; }
+
+      checkDaemons();
+      renderBuffer();
+      renderDaemons();
+      renderGrid();
+      updateStateLabel();
+
+      if (allDaemonsDone() || buffer.length >= BUFFER_SIZE) endGame();
+    }
+    function tick() {
+      if (gameOver) return;
+      timer--;
+      const mm = Math.floor(timer / 60), ss = timer % 60;
+      timerText.textContent = mm + ":" + (ss < 10 ? "0" : "") + ss;
+      const pct = Math.max(0, (timer / 45) * 100);
+      timerFill.style.width = pct + "%";
+      timerFill.classList.toggle("low", timer <= 10);
+      if (timer <= 0) endGame();
+    }
+    function resetGame() {
+      buildGrid();
+      buffer = [];
+      usedCells = {};
+      constraint = "free";
+      axisIndex = null;
+      lastCell = null;
+      timer = 45;
+      gameOver = false;
+      daemonsDone = {};
+      clearInterval(timerHandle);
+      timerHandle = setInterval(tick, 1000);
+      timerText.textContent = "0:45";
+      timerFill.style.width = "100%";
+      timerFill.classList.remove("low");
+      statusEl.innerHTML = "";
+      renderBuffer();
+      renderDaemons();
+      renderGrid();
+      updateStateLabel();
+    }
+
+    function openModal() {
+      modal.hidden = false;
+      document.body.classList.add("breach-open");
+      resetGame();
+    }
+    function closeModal() {
+      modal.hidden = true;
+      document.body.classList.remove("breach-open");
+      clearInterval(timerHandle);
+    }
+
+    trigger.addEventListener("click", openModal);
+    resetBtn.addEventListener("click", resetGame);
+    modal.querySelectorAll("[data-breach-close]").forEach((el) => {
+      el.addEventListener("click", closeModal);
+    });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && !modal.hidden) closeModal();
+    });
   }
 })();

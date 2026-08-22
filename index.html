@@ -320,7 +320,7 @@
           <span class="block-rule"></span>
         </header>
         <div class="projects-grid">
-          <article class="panel project reveal">
+          <article class="panel project reveal" tabindex="0">
             <div class="project-top">
               <span class="project-id">PRJ_01</span>
               <span class="tag-date">MAY 2026 &mdash; PRESENT</span>
@@ -335,7 +335,7 @@
             </p>
           </article>
 
-          <article class="panel project reveal">
+          <article class="panel project reveal" tabindex="0">
             <div class="project-top">
               <span class="project-id">PRJ_02</span>
               <span class="tag-date">OCT 2025</span>
@@ -348,7 +348,7 @@
             </p>
           </article>
 
-          <article class="panel project reveal">
+          <article class="panel project reveal" tabindex="0">
             <div class="project-top">
               <span class="project-id">PRJ_03</span>
               <span class="tag-date">FEB 2025 &mdash; MAR 2025</span>
@@ -423,6 +423,7 @@
     <aside class="socials" aria-label="Social links">
       <a href="https://www.linkedin.com/in/prentice-tang/" target="_blank" rel="noopener" aria-label="LinkedIn">in</a>
       <a href="https://github.com/prentang" target="_blank" rel="noopener" aria-label="GitHub">gh</a>
+      <button class="socials-hack" id="breach-trigger" aria-haspopup="dialog" aria-label="Breach Protocol">&#9678;</button>
       <span class="socials-rail" aria-hidden="true"></span>
     </aside>
 
@@ -432,6 +433,38 @@
       <p class="copy">&copy; 2026 PRENTICE TANG</p>
       <p class="copy muted">// built &amp; deployed by Prentice Tang</p>
     </footer>
+
+    <div class="breach-modal" id="breach-modal" role="dialog" aria-modal="true" aria-label="Breach Protocol" hidden>
+      <div class="breach-modal-backdrop" data-breach-close></div>
+      <div class="breach-modal-panel panel">
+        <button class="breach-modal-close" data-breach-close aria-label="Close Breach Protocol">&times;</button>
+        <div class="breach-head">
+          <h3 id="breach-state-label">SELECT ANY CELL</h3>
+          <div class="breach-timer-wrap">
+            <span id="breach-timer-text">0:45</span>
+            <div class="breach-timer-bar"><div class="breach-timer-fill" id="breach-timer-fill"></div></div>
+          </div>
+        </div>
+        <div class="breach-layout">
+          <div class="breach-board">
+            <div class="breach-grid" id="breach-grid"></div>
+            <p class="breach-axis-hint" id="breach-axis-hint"></p>
+            <div class="buffer-row">
+              <span class="buffer-label">Buffer</span>
+              <div class="buffer-slots" id="buffer-slots"></div>
+            </div>
+            <div class="breach-status" id="breach-status"></div>
+            <div class="breach-actions">
+              <button class="btn btn-ghost" id="breach-reset">Restart</button>
+            </div>
+          </div>
+          <div class="daemons-panel" id="daemons-panel">
+            <h4>Daemons</h4>
+            <div id="daemons-list"></div>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <script src="https://unpkg.com/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
     <script src="assets/js/app.js"></script>

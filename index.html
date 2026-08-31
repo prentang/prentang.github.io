@@ -420,6 +420,19 @@
       </section>
     </main>
 
+    <aside class="music-player" aria-label="Background music player">
+      <p class="music-label">Here&rsquo;s some music while you scroll</p>
+      <div class="music-row">
+        <button class="music-toggle" id="music-toggle" aria-label="Play music" aria-pressed="false">
+          <svg class="icon-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"></path></svg>
+          <svg class="icon-pause" viewBox="0 0 24 24" aria-hidden="true" hidden><path d="M6 5h4v14H6zM14 5h4v14h-4z"></path></svg>
+        </button>
+        <input type="range" class="volume-slider" id="volume-slider" min="0" max="100" value="50" aria-label="Volume" />
+        <span class="music-value" id="music-value">50%</span>
+      </div>
+      <audio id="bg-audio" src="assets/audio/ambient-background.mp3" preload="none" loop></audio>
+    </aside>
+
     <aside class="socials" aria-label="Social links">
       <a href="https://www.linkedin.com/in/prentice-tang/" target="_blank" rel="noopener" aria-label="LinkedIn">in</a>
       <a href="https://github.com/prentang" target="_blank" rel="noopener" aria-label="GitHub">gh</a>

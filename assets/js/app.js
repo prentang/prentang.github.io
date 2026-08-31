@@ -24,6 +24,7 @@
     initHud();
     initKonami();
     initBreachProtocol();
+    initMusicPlayer();
     if (!reduceMotion) initSmoothScroll();
     if (!reduceMotion) initScrollFX();
     if (!reduceMotion) initCanvas();
@@ -173,10 +174,11 @@
 
     const roles = [
       "Software Engineering",
-      "DevOps Enthusiast",
+      "DevOps Intern",
       "CS Student",
       "Cloud Automation",
       "Security Tooling",
+      "Systems",
     ];
     const glyphs = "!<>-_\\/[]{}=+*^?#01";
 
@@ -870,5 +872,55 @@
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape" && !modal.hidden) closeModal();
     });
+  }
+
+  /* ---------- background music player ---------- */
+  function initMusicPlayer() {
+    const audio = document.getElementById("bg-audio");
+    const toggle = document.getElementById("music-toggle");
+    const slider = document.getElementById("volume-slider");
+    const valueEl = document.getElementById("music-value");
+    const iconPlay = toggle && toggle.querySelector(".icon-play");
+    const iconPause = toggle && toggle.querySelector(".icon-pause");
+    if (!audio || !toggle || !slider || !valueEl) return;
+
+    let volume = 50;
+    try {
+      const saved = localStorage.getItem("bg-music-volume");
+      if (saved !== null && !isNaN(parseInt(saved, 10))) volume = parseInt(saved, 10);
+    } catch (e) {}
+
+    function applyVolume(v, persist) {
+      volume = Math.max(0, Math.min(100, Math.round(v)));
+      audio.volume = volume / 100;
+      slider.value = String(volume);
+      valueEl.textContent = volume + "%";
+      if (persist) {
+        try { localStorage.setItem("bg-music-volume", String(volume)); } catch (e) {}
+      }
+    }
+    applyVolume(volume, false);
+
+    function setPlayingUI(isPlaying) {
+      toggle.setAttribute("aria-pressed", isPlaying ? "true" : "false");
+      toggle.setAttribute("aria-label", isPlaying ? "Pause music" : "Play music");
+      if (iconPlay) iconPlay.hidden = isPlaying;
+      if (iconPause) iconPause.hidden = !isPlaying;
+    }
+
+    toggle.addEventListener("click", () => {
+      if (audio.paused) {
+        toggle.classList.add("loading");
+        const p = audio.play();
+        if (p && p.catch) p.catch(() => { toggle.classList.remove("loading"); });
+      } else {
+        audio.pause();
+      }
+    });
+    audio.addEventListener("playing", () => { toggle.classList.remove("loading"); setPlayingUI(true); });
+    audio.addEventListener("pause", () => setPlayingUI(false));
+    audio.addEventListener("waiting", () => toggle.classList.add("loading"));
+
+    slider.addEventListener("input", () => applyVolume(slider.value, true));
   }
 })();

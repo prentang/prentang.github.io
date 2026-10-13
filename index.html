@@ -89,10 +89,10 @@
           </p>
           <p class="hero-bio reveal">
             Computer science student building developer systems, cloud automation, and
-            security tooling. Most recently a Software Engineer Intern at
-            <span class="hl">Sonos</span> on the System Software team; incoming DevOps
-            Engineer Intern at <span class="hl">Palo Alto Networks</span> starting
-            September 2026.
+            security tooling. Currently a DevOps Engineer Intern at
+            <span class="hl">Palo Alto Networks</span>, with past internships at
+            <span class="hl">Sonos</span>, <span class="hl">CyberArk</span>, and
+            <span class="hl">Draeger</span>.
           </p>
           <div class="button-row reveal">
             <a class="btn btn-primary" href="Prentice_Tang_Resume.pdf" target="_blank" rel="noopener">
@@ -106,7 +106,7 @@
           <div class="hud reveal" role="list">
             <div class="hud-item" role="listitem">
               <span class="hud-label">// ROLE</span>
-              <span class="hud-value">Incoming Intern @ PANW</span>
+              <span class="hud-value">DevOps Intern @ PANW</span>
             </div>
             <div class="hud-item" role="listitem">
               <span class="hud-label">// LOCATION</span>
@@ -178,13 +178,17 @@
                 <div class="xp-id">
                   <span class="xp-logo"><img src="assets/logos/palo-alto-networks.png" alt="Palo Alto Networks logo" loading="lazy" width="48" height="48" /></span>
                   <div>
-                    <h3>Incoming DevOps Engineer Intern</h3>
+                    <h3>DevOps Engineer Intern</h3>
                     <p class="xp-org">Palo Alto Networks &mdash; Idira R&amp;D</p>
                   </div>
                 </div>
-                <span class="tag-date">STARTING SEP 2026</span>
+                <span class="tag-date">SEP 2026 &mdash; CURRENT</span>
               </div>
               <p class="xp-loc">Needham, MA</p>
+              <ul>
+                <li>Extended the AI agent skill behind an in-house dependency automation tool, adding new-repo onboarding and IaC deployment detection to prevent PRs from triggering staging deploys.</li>
+                <li>Diagnosed a silent Port-GitHub integration failure behind a service outage; shipped a Python fix and built Datadog monitors to close the alerting gap.</li>
+              </ul>
             </div>
           </article>
 
@@ -204,7 +208,6 @@
               <p class="xp-loc">Boston, MA</p>
               <ul>
                 <li>Refactored legacy speaker simulators from direct exported function calls to an event-driven API that more accurately mimics real hardware behavior, improving testability and debugging.</li>
-                <li>Supporting migration of simulator integration tests from Jenkins to GitHub Actions to improve CI maintainability and developer workflow.</li>
                 <li>Developed a CLAUDE.md workflow guiding AI-assisted simulator driver creation, from tracing real hardware behavior to implementation, ioctl-level Python validation, and YAML-based linting.</li>
               </ul>
             </div>
@@ -247,8 +250,7 @@
               <p class="xp-loc">Newton, MA</p>
               <ul>
                 <li>Developed an event-driven AWS Lambda service using Python, API Gateway, and SNS to audit and remediate GitHub repository metadata for compliance.</li>
-                <li>Created an artifact signing dashboard with Artifactory and Datadog APIs for macOS and Windows release binaries.</li>
-                <li>Refactored scanner image-version tagging logic, reducing security scan runtime across scanner pipelines.</li>
+                <li>Refactored scanner image-version tagging logic, reducing security scan runtime by up to <span class="hl">70%</span> across scanner pipelines.</li>
               </ul>
             </div>
           </article>
@@ -268,9 +270,8 @@
               </div>
               <p class="xp-loc">Andover, MA</p>
               <ul>
-                <li>Integrated VMware vSphere metrics into Grafana using Python SDKs and REST APIs for real-time monitoring across 40+ servers.</li>
-                <li>Refactored Python handling Jira's REST API, reducing Jenkins build times from 2 hours to under 5 minutes.</li>
-                <li>Deployed Grafana as the company's first observability tool for cross-departmental data visualization.</li>
+                <li>Deployed Grafana as the company's first observability tool, integrating VMware vSphere metrics via Python SDKs and REST APIs to monitor health across 40+ servers.</li>
+                <li>Refactored the Python codebase handling Jira's REST API, reducing Jenkins build times from 2 hours to under 5 minutes (95% improvement) by caching API responses and optimizing queries.</li>
               </ul>
             </div>
           </article>

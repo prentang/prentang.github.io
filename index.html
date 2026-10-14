@@ -43,7 +43,6 @@
     <!-- decorative overlays -->
     <canvas id="bg-canvas" aria-hidden="true"></canvas>
     <div class="scanlines" aria-hidden="true"></div>
-    <div class="grain" aria-hidden="true"></div>
     <div class="vignette" aria-hidden="true"></div>
     <div class="scroll-progress" aria-hidden="true"></div>
     <div class="hud-frame" aria-hidden="true">
@@ -53,7 +52,10 @@
     <div class="hud-readout right" id="hud-right" aria-hidden="true"></div>
     <div class="cursor-ring" aria-hidden="true"></div>
     <div class="boot" id="boot" aria-hidden="true">
-      <pre class="boot-text" id="boot-text"></pre>
+      <div class="boot-inner">
+        <pre class="boot-text" id="boot-text"></pre>
+        <p class="boot-skip">press any key, click, or scroll to skip</p>
+      </div>
     </div>
 
     <nav id="nav">
@@ -78,49 +80,63 @@
 
     <main id="top">
       <!-- ===================== HERO ===================== -->
-      <section class="hero" id="about">
+      <section class="hero" id="hero">
         <div class="hero-grid" aria-hidden="true"></div>
-        <div class="hero-inner">
-          <p class="kicker reveal"><span class="blink">&#9608;</span> SYSTEM ONLINE &mdash; WELCOME</p>
-          <h1 class="glitch reveal" data-text="PRENTICE TANG">PRENTICE TANG</h1>
-          <p class="role-line reveal">
-            <span class="role-prefix">&gt;</span>
-            <span class="role" id="role">CS Student</span><span class="caret">_</span>
-          </p>
-          <p class="hero-bio reveal">
-            Computer science student building developer systems, cloud automation, and
-            security tooling. Currently a DevOps Engineer Intern at
-            <span class="hl">Palo Alto Networks</span>, with past internships at
-            <span class="hl">Sonos</span>, <span class="hl">CyberArk</span>, and
-            <span class="hl">Draeger</span>.
-          </p>
-          <div class="button-row reveal">
-            <a class="btn btn-primary" href="Prentice_Tang_Resume.pdf" target="_blank" rel="noopener">
-              <span>View Resume</span>
-            </a>
-            <a class="btn btn-ghost" href="mailto:prenticetang@gmail.com">
-              <span>Email Me</span>
-            </a>
+        <div class="hero-layout">
+          <div class="hero-inner">
+            <h1 class="glitch reveal" data-text="PRENTICE TANG">PRENTICE TANG</h1>
+            <p class="role-line reveal">
+              <span class="role-prefix">&gt;</span>
+              <span class="role" id="role">CS Student</span><span class="caret">_</span>
+            </p>
+            <p class="hero-bio reveal">
+              Computer science student building developer systems, cloud automation, and
+              security tooling. Currently a DevOps Engineer Intern at
+              <span class="hl">Palo Alto Networks</span>, with past internships at
+              <span class="hl">Sonos</span>, <span class="hl">CyberArk</span>, and
+              <span class="hl">Draeger</span>.
+            </p>
+            <div class="button-row reveal">
+              <a class="btn btn-primary" href="Prentice_Tang_Resume.pdf" target="_blank" rel="noopener">
+                <span>View Resume</span>
+              </a>
+              <a class="btn btn-ghost" href="mailto:prenticetang@gmail.com">
+                <span>Email Me</span>
+              </a>
+            </div>
           </div>
 
-          <div class="hud reveal" role="list">
-            <div class="hud-item" role="listitem">
-              <span class="hud-label">// ROLE</span>
-              <span class="hud-value">DevOps Intern @ PANW</span>
+          <aside class="panel dossier reveal" aria-label="Profile summary">
+            <div class="terminal-bar">
+              <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+              <span class="terminal-path">~/subject/profile.dat</span>
             </div>
-            <div class="hud-item" role="listitem">
-              <span class="hud-label">// LOCATION</span>
-              <span class="hud-value">Boston, MA</span>
+            <div class="dossier-id">
+              <span class="dossier-mono" aria-hidden="true">PT</span>
+              <div>
+                <p class="dossier-name">PRENTICE TANG</p>
+                <p class="dossier-tag">SUBJECT PROFILE</p>
+              </div>
             </div>
-            <div class="hud-item" role="listitem">
-              <span class="hud-label">// GPA</span>
-              <span class="hud-value">3.72 / 4.00</span>
+            <div class="hud" role="list">
+              <div class="hud-item" role="listitem">
+                <span class="hud-label">// ROLE</span>
+                <span class="hud-value">DevOps Intern @ PANW</span>
+              </div>
+              <div class="hud-item" role="listitem">
+                <span class="hud-label">// LOCATION</span>
+                <span class="hud-value">Boston, MA</span>
+              </div>
+              <div class="hud-item" role="listitem">
+                <span class="hud-label">// GPA</span>
+                <span class="hud-value">3.72 / 4.00</span>
+              </div>
+              <div class="hud-item" role="listitem">
+                <span class="hud-label">// GRADUATION</span>
+                <span class="hud-value">DEC 2026</span>
+              </div>
             </div>
-            <div class="hud-item" role="listitem">
-              <span class="hud-label">// GRADUATION</span>
-              <span class="hud-value">DEC 2026</span>
-            </div>
-          </div>
+          </aside>
         </div>
         <a href="#experience" class="scroll-cue" aria-label="Scroll down">
           <span>SCROLL</span>
@@ -129,8 +145,8 @@
       </section>
 
       <!-- ===================== ABOUT ===================== -->
-      <section class="block" id="about-detail">
-        <header class="block-head reveal">
+      <section class="block" id="about">
+        <header class="block-head reveal" data-num="01">
           <span class="block-num">// 01</span>
           <h2 class="block-title" data-text="ABOUT">ABOUT</h2>
           <span class="block-rule"></span>
@@ -165,7 +181,7 @@
 
       <!-- ===================== EXPERIENCE ===================== -->
       <section class="block" id="experience">
-        <header class="block-head reveal">
+        <header class="block-head reveal" data-num="02">
           <span class="block-num">// 02</span>
           <h2 class="block-title" data-text="EXPERIENCE">EXPERIENCE</h2>
           <span class="block-rule"></span>
@@ -280,7 +296,7 @@
 
       <!-- ===================== SKILLS ===================== -->
       <section class="block" id="skills">
-        <header class="block-head reveal">
+        <header class="block-head reveal" data-num="03">
           <span class="block-num">// 03</span>
           <h2 class="block-title" data-text="SKILLS">SKILLS</h2>
           <span class="block-rule"></span>
@@ -315,13 +331,13 @@
 
       <!-- ===================== PROJECTS ===================== -->
       <section class="block" id="projects">
-        <header class="block-head reveal">
+        <header class="block-head reveal" data-num="04">
           <span class="block-num">// 04</span>
           <h2 class="block-title" data-text="PROJECTS">PROJECTS</h2>
           <span class="block-rule"></span>
         </header>
         <div class="projects-grid">
-          <article class="panel project reveal" tabindex="0">
+          <article class="panel project reveal">
             <div class="project-top">
               <span class="project-id">PRJ_01</span>
               <span class="tag-date">MAY 2026 &mdash; PRESENT</span>
@@ -336,7 +352,7 @@
             </p>
           </article>
 
-          <article class="panel project reveal" tabindex="0">
+          <article class="panel project reveal">
             <div class="project-top">
               <span class="project-id">PRJ_02</span>
               <span class="tag-date">OCT 2025</span>
@@ -349,7 +365,7 @@
             </p>
           </article>
 
-          <article class="panel project reveal" tabindex="0">
+          <article class="panel project reveal">
             <div class="project-top">
               <span class="project-id">PRJ_03</span>
               <span class="tag-date">FEB 2025 &mdash; MAR 2025</span>
@@ -371,7 +387,7 @@
 
       <!-- ===================== LEADERSHIP ===================== -->
       <section class="block" id="leadership">
-        <header class="block-head reveal">
+        <header class="block-head reveal" data-num="05">
           <span class="block-num">// 05</span>
           <h2 class="block-title" data-text="LEADERSHIP">LEADERSHIP</h2>
           <span class="block-rule"></span>
@@ -402,7 +418,7 @@
 
       <!-- ===================== CONTACT ===================== -->
       <section class="block" id="contact">
-        <header class="block-head reveal">
+        <header class="block-head reveal" data-num="06">
           <span class="block-num">// 06</span>
           <h2 class="block-title" data-text="CONTACT">CONTACT</h2>
           <span class="block-rule"></span>
@@ -446,6 +462,9 @@
     <footer>
       <p class="copy">&copy; 2026 PRENTICE TANG</p>
       <p class="copy muted">// built &amp; deployed by Prentice Tang</p>
+      <p class="deploy-status" id="deploy-status" aria-hidden="true">
+        <span class="deploy-dot"></span> last deployed <span id="deploy-date">—</span> &middot; <span class="deploy-pill">online</span>
+      </p>
     </footer>
 
     <div class="breach-modal" id="breach-modal" role="dialog" aria-modal="true" aria-label="Breach Protocol" hidden>
@@ -467,7 +486,7 @@
               <span class="buffer-label">Buffer</span>
               <div class="buffer-slots" id="buffer-slots"></div>
             </div>
-            <div class="breach-status" id="breach-status"></div>
+            <div class="breach-status" id="breach-status" aria-live="polite"></div>
             <div class="breach-actions">
               <button class="btn btn-ghost" id="breach-reset">Restart</button>
             </div>

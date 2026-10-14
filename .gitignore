@@ -12,3 +12,11 @@ desktop.ini
 .dist/
 node_modules/
 *.log
+
+# Claude Code tooling (locally installed skill/binary, not project source)
+.claude/
+
+# Impeccable design skill — machine-local / ephemeral state
+.impeccable/config.local.json
+.impeccable/hook.cache.json
+.impeccable/questions/

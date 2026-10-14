@@ -25,16 +25,18 @@
     initKonami();
     initBreachProtocol();
     initMusicPlayer();
+    initDeployStatus();
+    initConsoleGreeting();
     if (!reduceMotion) initSmoothScroll();
     if (!reduceMotion) initScrollFX();
     if (!reduceMotion) initCanvas();
     if (!reduceMotion) initHeroDecode();
+    if (!reduceMotion) initHudDecode();
     if (!reduceMotion) initParallax();
     if (!reduceMotion) initScanCards();
     if (!reduceMotion && finePointer) {
       initCursor();
       initTilt();
-      initMagnetic();
     }
   });
 
@@ -42,7 +44,18 @@
   function initBoot() {
     const boot = document.getElementById("boot");
     const text = document.getElementById("boot-text");
-    if (!boot || !text) return;
+
+    // signals the hero's decode sequence to start; deferred a tick so
+    // listeners registered later in this same DOMContentLoaded pass
+    // (initHeroDecode, initHudDecode) are attached before it fires
+    function signalBootDone() {
+      requestAnimationFrame(() => window.dispatchEvent(new CustomEvent("boot:done")));
+    }
+
+    if (!boot || !text) {
+      signalBootDone();
+      return;
+    }
 
     const lines = [
       "> initializing rick_roll.os ...",
@@ -53,8 +66,12 @@
       "> ACCESS GRANTED",
     ];
 
-    if (reduceMotion) {
+    let seenBefore = false;
+    try { seenBefore = localStorage.getItem("boot-seen") === "1"; } catch (e) {}
+
+    if (reduceMotion || seenBefore) {
       boot.classList.add("done");
+      signalBootDone();
       return;
     }
 
@@ -89,12 +106,15 @@
     function dismiss() {
       boot.classList.add("done");
       document.body.classList.remove("boot-lock");
+      try { localStorage.setItem("boot-seen", "1"); } catch (e) {}
+      signalBootDone();
     }
-    // safety + let the user skip the intro by interacting
+    // safety + let the user skip the intro by interacting (see the on-screen hint)
     setTimeout(dismiss, 4000);
     window.addEventListener("wheel", dismiss, { once: true, passive: true });
     window.addEventListener("touchstart", dismiss, { once: true, passive: true });
     window.addEventListener("keydown", dismiss, { once: true });
+    window.addEventListener("click", dismiss, { once: true });
   }
 
   /* ---------- nav: burger + hide on scroll-down ---------- */
@@ -251,13 +271,13 @@
     function resize() {
       w = canvas.width = window.innerWidth;
       h = canvas.height = window.innerHeight;
-      const count = Math.min(70, Math.floor((w * h) / 26000));
+      const count = Math.min(40, Math.floor((w * h) / 40000));
       particles = Array.from({ length: count }, () => ({
         x: Math.random() * w,
         y: Math.random() * h,
         vy: 0.25 + Math.random() * 0.9,
         len: 8 + Math.random() * 26,
-        a: 0.1 + Math.random() * 0.35,
+        a: 0.08 + Math.random() * 0.22,
         cyan: Math.random() > 0.35,
       }));
     }
@@ -434,27 +454,13 @@
     });
   }
 
-  /* ---------- magnetic buttons ---------- */
-  function initMagnetic() {
-    document.querySelectorAll(".btn").forEach((btn) => {
-      btn.addEventListener("pointermove", (e) => {
-        const r = btn.getBoundingClientRect();
-        const x = e.clientX - r.left - r.width / 2;
-        const y = e.clientY - r.top - r.height / 2;
-        btn.style.transform = "translate(" + x * 0.3 + "px," + y * 0.45 + "px)";
-      });
-      btn.addEventListener("pointerleave", () => {
-        btn.style.transform = "";
-      });
-    });
-  }
-
-  /* ---------- hero name decode-on-load ---------- */
+  /* ---------- hero name decode, cued off the boot handoff ---------- */
   function initHeroDecode() {
     const el = document.querySelector(".hero .glitch");
     if (!el) return;
     const final = el.textContent;
     const glyphs = "ABCDEFGHIJKLMNOPQRSTUVWXYZ#@%&/\\<>01";
+    function run() {
     el.classList.add("decoding");
     let frame = 0;
     const total = 26;
@@ -478,6 +484,53 @@
         el.classList.remove("decoding");
       }
     }, 45);
+    }
+    window.addEventListener("boot:done", run, { once: true });
+  }
+
+  /* ---------- HUD stat strip decode, staggered right after the name ----------
+     continues the same "systems coming online" sequence as initHeroDecode:
+     each readout (Role/Location/GPA/Graduation) resolves from scrambled
+     glyphs in turn, like a HUD populating live data one field at a time. */
+  function initHudDecode() {
+    const items = document.querySelectorAll(".hud-value");
+    if (!items.length) return;
+    const glyphs = "ABCDEFGHIJKLMNOPQRSTUVWXYZ#@%&/\\<>01";
+
+    function decodeOne(el) {
+      const final = el.textContent;
+      el.classList.add("decoding");
+      let frame = 0;
+      const total = 16;
+      const timer = setInterval(() => {
+        const prog = frame / total;
+        let out = "";
+        for (let i = 0; i < final.length; i++) {
+          const ch = final[i];
+          if (!/[a-zA-Z0-9]/.test(ch)) {
+            out += ch;
+          } else if (i / final.length < prog) {
+            out += ch;
+          } else {
+            out += glyphs[Math.floor(Math.random() * glyphs.length)];
+          }
+        }
+        el.textContent = out;
+        frame++;
+        if (frame > total) {
+          clearInterval(timer);
+          el.textContent = final;
+          el.classList.remove("decoding");
+        }
+      }, 40);
+    }
+
+    function run() {
+      items.forEach((el, i) => {
+        setTimeout(() => decodeOne(el), 550 + i * 160);
+      });
+    }
+    window.addEventListener("boot:done", run, { once: true });
   }
 
   /* ---------- mouse parallax on hero grid ---------- */
@@ -599,25 +652,16 @@
     apply();
   }
 
-  /* ---------- netrunner scan-to-reveal on project cards ---------- */
+  /* ---------- netrunner scan flourish on project cards ----------
+     decorative only: project-details is always visible; this just plays
+     a one-time "object scan" sweep + tag when the card first comes into view */
   function initScanCards() {
     const cards = document.querySelectorAll(".project");
-    cards.forEach((card, i) => {
-      const details = card.querySelector(".project-details");
+    if (!cards.length) return;
+
+    cards.forEach((card) => {
       const topRow = card.querySelector(".project-top");
-      if (!details || !topRow) return;
-
-      const redacted = document.createElement("p");
-      redacted.className = "scan-redacted";
-      const source = details.textContent.trim();
-      redacted.textContent =
-        source.replace(/[a-zA-Z0-9]/g, "█").slice(0, 90) + "...";
-      details.insertAdjacentElement("beforebegin", redacted);
-
-      const prompt = document.createElement("p");
-      prompt.className = "scan-prompt";
-      prompt.textContent = "> hover to scan";
-      details.insertAdjacentElement("afterend", prompt);
+      if (!topRow) return;
 
       const sweep = document.createElement("div");
       sweep.className = "scanline-sweep";
@@ -625,28 +669,35 @@
 
       const tags = document.createElement("span");
       tags.className = "scan-top-tags";
-      tags.innerHTML = '<span class="scan-flag">ENCRYPTED</span>';
+      tags.innerHTML = '<span class="scan-flag">SCANNING</span>';
       topRow.appendChild(tags);
       const flag = tags.querySelector(".scan-flag");
 
-      card.classList.add("scan-armed");
-
-      let scanned = false;
-      let scanning = false;
       function runScan() {
-        if (scanned || scanning) return;
-        scanning = true;
         card.classList.add("scanning");
         setTimeout(() => {
           card.classList.remove("scanning");
-          card.classList.add("scanned");
-          flag.textContent = "DECRYPTED";
+          flag.textContent = "VERIFIED";
           flag.classList.add("done");
-          scanned = true;
         }, 900);
       }
-      card.addEventListener("mouseenter", runScan);
-      card.addEventListener("focus", runScan);
+
+      if (!("IntersectionObserver" in window)) {
+        runScan();
+        return;
+      }
+      const obs = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              runScan();
+              obs.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.3 }
+      );
+      obs.observe(card);
     });
   }
 
@@ -853,15 +904,42 @@
       updateStateLabel();
     }
 
+    const focusableSelector =
+      'button, [href], input, [tabindex]:not([tabindex="-1"])';
+    let lastFocused = null;
+
+    function trapTab(e) {
+      if (e.key !== "Tab") return;
+      const nodes = Array.prototype.slice.call(
+        modal.querySelectorAll(focusableSelector)
+      );
+      if (!nodes.length) return;
+      const first = nodes[0];
+      const last = nodes[nodes.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
+
     function openModal() {
+      lastFocused = document.activeElement;
       modal.hidden = false;
       document.body.classList.add("breach-open");
       resetGame();
+      const closeBtn = modal.querySelector(".breach-modal-close");
+      if (closeBtn) closeBtn.focus();
+      modal.addEventListener("keydown", trapTab);
     }
     function closeModal() {
       modal.hidden = true;
       document.body.classList.remove("breach-open");
       clearInterval(timerHandle);
+      modal.removeEventListener("keydown", trapTab);
+      if (lastFocused && typeof lastFocused.focus === "function") lastFocused.focus();
     }
 
     trigger.addEventListener("click", openModal);
@@ -920,7 +998,34 @@
     audio.addEventListener("playing", () => { toggle.classList.remove("loading"); setPlayingUI(true); });
     audio.addEventListener("pause", () => setPlayingUI(false));
     audio.addEventListener("waiting", () => toggle.classList.add("loading"));
+    audio.addEventListener("error", () => {
+      toggle.classList.remove("loading");
+      setPlayingUI(false);
+    });
 
     slider.addEventListener("input", () => applyVolume(slider.value, true));
+  }
+
+  /* ---------- footer deploy status: real timestamp, not a fabricated build number ---------- */
+  function initDeployStatus() {
+    const el = document.getElementById("deploy-date");
+    if (!el) return;
+    try {
+      const d = new Date(document.lastModified);
+      if (!isNaN(d.getTime())) {
+        const months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+        el.textContent = months[d.getMonth()] + " " + d.getDate() + ", " + d.getFullYear();
+      }
+    } catch (e) {}
+  }
+
+  /* ---------- a small wink for anyone who opens devtools ---------- */
+  function initConsoleGreeting() {
+    if (typeof console === "undefined" || !console.log) return;
+    console.log(
+      "%c> ACCESS GRANTED %c\nhey, fellow dev. thanks for poking around.\nif you found a bug (or just want to talk shop): prenticetang@gmail.com",
+      "color:#fcee0a; font-family:monospace; font-weight:bold; font-size:14px;",
+      "color:#00f0ff; font-family:monospace; font-size:12px;"
+    );
   }
 })();
